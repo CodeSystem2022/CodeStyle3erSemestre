@@ -30,7 +30,3 @@ def obtenerPool(cls):
         
 if __name__ == '__main__':
     pass
-  
-    
-    
-
