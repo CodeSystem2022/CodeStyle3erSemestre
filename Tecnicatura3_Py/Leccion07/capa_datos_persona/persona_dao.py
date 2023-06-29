@@ -1,8 +1,4 @@
 # Capa de datos: crear personaDAO.py
-from capa_datos_persona.Persona import Persona
-from capa_datos_persona.conexion import Conexion
-from logger_base import log
-
 
 class PersonaDAO:
     """
@@ -28,8 +24,7 @@ class PersonaDAO:
                 registros = cursor.fetchall()
                 personas = []  # creamos una lista
                 for registro in registros:
-                    persona = Persona(
-                        registro[0], registro[1], registro[2], registro[3])
+                    persona = Persona(registro[0], registro[1], registro[2], registro[3])
                     personas.append(persona)
                 return personas
 
@@ -39,15 +34,14 @@ class PersonaDAO:
             with Conexion.obtenercursor() as cursor:
                 valores = (persona.nombre, persona.apellido, persona.email)
                 cursor.execute(cls.insertar, valores)
-                log.debug(f'persona Insertada: {persona}')
+                log.debug(f'Persona Insertada: {persona}')
                 return cursor.rowcount
 
     @classmethod
     def actualizar(cls, persona):
         with Conexion.obtenerConexion():
             with Conexion.obtenercursor() as cursor:
-                valores = (persona.nombre, persona.apellido,
-                           persona.email, persona.id_persona)
+                valores = (persona.nombre, persona.apellido, persona.email, persona.id_persona)
                 cursor.execute(cls._ACTUALIZAR, valores)
                 log.debug(f'persona actualizada: {persona}')
                 return cursor.rowcount
