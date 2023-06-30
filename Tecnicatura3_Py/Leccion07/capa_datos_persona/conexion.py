@@ -14,19 +14,59 @@ class Conexion:
 
     @classmethod
     def obtenerConexion(cls):
-        pass
-        
-        
-# AGREGAR CURSOR        
-@classmethod
-def obtenerCursor(cls):
-   pass
+        conexion = cls.obtenerPool().getconn()
+        log.debug(f'Conexión obtenida del pool:{conexion}')
+        return conexion
 
-@classmethod
-def obtenerPool(cls):
+    # AGREGAR CURSOR
+    @classmethod
+    def obtenerCursor(cls):
+
+
+    @classmethod
+    def obtenerPool(cls):
     if cls.pool is None:
         try:
-            cls.pool = pool.SimpleConnectionPool()
+            cls.pool = pool.SimpleConnectionPool(cls._MIN_CON,
+                                                 cls._MAX_CON,
+                                                 host=cls._HOST,
+                                                 user=cls._USERNAME,
+                                                 password=cls._PASSWORD,
+                                                 port=cls._DB_PORT,
+                                                 database=cls._DATABASE)
+            log.debug(f'creación del pool exitosa:{cls._pool}')
+            return cls._pool
+        except Exceptin as e:
+            log.error(f'ocurrió un error al obtener el pool: {e}')
+            sys.exit()
+    else:
+        return cls._pool
+    #Fernando Rojas
+    @classmethod
+    def liberarConexion(cls, conexion):
+        cls.obtenerPool().putconn(conexion)
+        log.debug(f'Regresamos la conexion del pool: {conexion}')
+
+    @classmethod
+    def cerrarConexones(cls):
+        cls.obtenerPool().closeall()
+
         
 if __name__ == '__main__':
+<<<<<<< HEAD
     pass
+=======
+    conexion1 = Conxion.obtenerConcexion()
+    Conexion.liberarConexion(conexion1)
+    conexion2 = Conxion.obtenerConcexion()
+    Conexion.liberarConexion(conexion2)
+    conexion3 = Conxion.obtenerConcexion()
+    Conexion.liberarConexion(conexion3)
+    conexion4 = Conxion.obtenerConcexion()
+    conexion5 = Conxion.obtenerConcexion()
+    conexion6 = Conxion.obtenerConcexion()
+  
+    
+    
+
+>>>>>>> bb68ca8b395cc7c5f9f038f26681c81d7a364285
